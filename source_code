@@ -1,0 +1,44 @@
+
+--- 
+title: "Bryan Delgado - Diamonds Inventory Dashboard"
+output:
+  flexdashboard::flex_dashboard:
+    theme: 
+      version: 4
+      bootswatch: minty
+    html_document: default
+    code_folding: hide
+    source_code: embed
+---
+```{r setup, include = FALSE }
+library(ggplot2)
+library(dplyr)
+knitr::opts_chunk$set(fig.width = 5, fig.asp = 1/3)
+```
+## Column 1
+
+### Carat
+
+```{r}
+ggplot(diamonds, aes(x=carat, fill=..x..)) + geom_histogram(binwidth = 0.1) + scale_fill_gradient2(low='yellow', high='forestgreen',mid = 'green', midpoint = mean(diamonds$carat))
+```
+### Cut
+```{r}
+ggplot(diamonds, aes(x=cut, fill=..x..)) + geom_bar() + scale_fill_gradient2(low='yellow', mid = 'green', high='forestgreen')
+```
+### Color
+```{r}
+ggplot(diamonds, aes(x=color, fill=..x..)) + geom_bar() + scale_fill_gradient2(low='yellow', mid = 'green', high='forestgreen')
+  
+```
+## Column 2
+### The largest diamonds
+```{r}
+diamonds %>% 
+  arrange(desc(carat)) %>% 
+  head(100) %>% 
+  select(carat, cut, color, price) %>% 
+  DT::datatable()
+  echo=FALSE
+```
+```
